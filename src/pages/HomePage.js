@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { db } from '../firebase'; // adjust path if needed
+import { collection, addDoc } from 'firebase/firestore';
+
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
@@ -17,10 +20,15 @@ const HomePage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Registration submitted:', formData);
-    setSubmitted(true);
+    try{
+        await addDoc(collection(db, "registrations"), formData);
+        setSubmitted(true)
+        console.log("Registration saved to firestore.");
+        }catch(err){
+            console.error("error adding document:", err)
+        }      
   };
 
   return (
