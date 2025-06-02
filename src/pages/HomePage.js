@@ -77,7 +77,7 @@ const HomePage = () => {
                 id="lastName"
                 name="lastName"
                 required
-                value={formData.firstName}
+                value={formData.lastName}
                 onChange={handleChange}
               />
             </div>
