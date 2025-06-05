@@ -26,13 +26,13 @@ const ServiceDiscoveryPage = () => (
         </div>
       </div>
       <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://soru-mag.com'}>
+        <div className="work-item" onClick={() => window.location.href = 'https://www.solumag.com/fr/'}>
           <img src={SoruMag} alt="SORU MAG" className="img-fluid rounded work-image-placeholder" />
           <p className="work-title">SORU MAG, 2024</p>
         </div>
       </div>
       <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://luminatech.com'}>
+        <div className="work-item" onClick={() => window.location.href = 'https://luminatechgroup.com/'}>
           <img src={luminaTech} alt="LuminaTech" className="img-fluid rounded work-image-placeholder" />
           <p className="work-title">LuminaTech, 2024</p>
         </div>
