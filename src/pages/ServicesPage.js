@@ -1,13 +1,13 @@
 import React from 'react';
 import '../App.css';
-import serviceImg from '../assets/images/serviceimg.png'; // Import the image
+import serviceImg from '../assets/images/serviceimg.png'; 
 
 const ServicesPage = () => (
   <div className="container services-section">
     <div className="row align-items-center">
       <div className="col-md-6">
         <div className="services-image-placeholder">
-          {/* Use the imported image */}
+          
           <img src={serviceImg} alt="Phone displaying content" className="img-fluid rounded" />
         </div>
       </div>

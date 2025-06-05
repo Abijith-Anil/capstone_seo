@@ -88,7 +88,7 @@ body {
   color: #495057;
 }
 
-/* New styles for ServicesPage */
+/* Existing ServicesPage styles */
 .services-section {
   padding: 4rem 0;
 }
@@ -140,4 +140,34 @@ body {
 .image-placeholder-text {
   font-size: 1.2rem;
   color: #6c757d;
+}
+
+/* New styles for ServiceDiscoveryPage */
+.work-section {
+  padding: 4rem 0;
+}
+
+.work-item {
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.work-image-placeholder {
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  height: 300px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.work-item:hover .work-image-placeholder {
+  transform: scale(1.05);
+}
+
+.work-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0d6efd;
+  text-align: center;
 }
