@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../App.css';
 import serviceImg from '../assets/images/serviceimg.png'; 
 
@@ -20,7 +21,11 @@ const ServicesPage = () => (
           <p>This is the space to introduce the business and what it has to offer. Define the qualities and values that make it unique.</p>
         </div>
         <div className="service-item">
-          <h3>Service Discovery Page</h3>
+          <h3>
+            <Link to="/service-discovery" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Service Discovery Page
+            </Link>
+          </h3>
           <p>This is the space to introduce the business and what it has to offer. Define the qualities and values that make it unique.</p>
         </div>
         <div className="service-item">

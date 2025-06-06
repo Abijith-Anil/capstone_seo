@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase/firebase';
 import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import client1 from '../assets/images/client1.png';
-import client2 from '../assets/images/client2.png';
+import Puma from '../assets/images/Puma.png';
+import Nike from '../assets/images/Nike.png';
 import '../assets/styles/HomePage.css';
 
 const HomePage = () => {
@@ -96,8 +96,8 @@ const HomePage = () => {
           <p>Reimagine Your Marketing Journey</p>
         </div>
         <div className="images">
-          <img src={client1} alt="Client 1" />
-          <img src={client2} alt="Client 2" />
+          <img src={Puma} alt="Puma" />
+          <img src={Nike} alt="Nike" />
         </div>
         <a href="#form" className="discover">🔍 Discover More Clients</a>
       </section>

@@ -4,6 +4,7 @@ body {
   background-color: #f8f9fa;
   color: #212529;
   margin: 0;
+  height: 100vh;
 }
 
 .navbar-brand {
@@ -142,7 +143,7 @@ body {
   color: #6c757d;
 }
 
-/* New styles for ServiceDiscoveryPage */
+/* Existing ServiceDiscoveryPage styles */
 .work-section {
   padding: 4rem 0;
 }
@@ -170,4 +171,41 @@ body {
   font-weight: 600;
   color: #0d6efd;
   text-align: center;
+}
+
+/* Updated styles for ContactPage */
+.contact-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+}
+
+.full-width-wrapper {
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.contact-card {
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-details p {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact-details i {
+  color: #0d6efd;
 }
