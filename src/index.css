@@ -6,6 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
    line-height: 1.6; /* Improves text readability */
+   color: #333; /* Improves text contrast for better readability */
+
 }
 
 code {
