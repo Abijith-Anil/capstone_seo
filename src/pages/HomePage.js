@@ -27,7 +27,7 @@ const HomePage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  const [user, setUser] = useState(null); // Track current user
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -48,8 +48,17 @@ const HomePage = () => {
 
     try {
       if (isLogin) {
-        await doSignInWithEmailAndPassword(formData.email, formData.password);
-        navigate('/Dashboard');
+        const signInUser = await doSignInWithEmailAndPassword(formData.email, formData.password);
+        const signedInUser = signInUser.user;
+
+        const userDoc = await getDoc(doc(db, 'users', signedInUser.uid));
+        const userData = userDoc.data();
+
+        if (userData?.isAdmin) {
+          navigate('/admin-dashboard');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         const userCredential = await doCreateUserWithEmailAndPassword(formData.email, formData.password);
         const user = userCredential.user;
@@ -57,9 +66,10 @@ const HomePage = () => {
         await setDoc(doc(db, 'users', user.uid), {
           ...formData,
           createdAt: new Date(),
+          isAdmin: false,
         });
 
-        navigate('/Dashboard');
+        navigate('/dashboard');
       }
 
       setFormData({
@@ -84,7 +94,6 @@ const HomePage = () => {
     try {
       const result = await doSignInWithGoogle();
       const user = result.user;
-
       const userDocRef = doc(db, 'users', user.uid);
       const userDocSnap = await getDoc(userDocRef);
 
@@ -96,11 +105,15 @@ const HomePage = () => {
           phone: '',
           company: '',
           createdAt: new Date(),
+          isAdmin: false,
         });
+        navigate('/dashboard');
+      } else {
+        const userData = userDocSnap.data();
+        navigate(userData?.isAdmin ? '/admin-dashboard' : '/dashboard');
       }
 
       setLoading(false);
-      navigate('/Dashboard');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -129,15 +142,15 @@ const HomePage = () => {
         <div className="cards">
           <div className="card">
             <h4>500 +</h4>
-            <p>Businesses served: Partnering globally, we deliver tailored marketing solutions to meet diverse needs and goals.</p>
+            <p>Businesses served globally.</p>
           </div>
           <div className="card">
             <h4>200K</h4>
-            <p>Monthly Website Visits: Our campaigns consistently drive significant traffic, boosting online presence and engagement.</p>
+            <p>Monthly Website Visits.</p>
           </div>
           <div className="card">
             <h4>$2M +</h4>
-            <p>Gross Monthly Ad Spend: Managing substantial ad budgets, we optimize campaigns for high return of investment.</p>
+            <p>Gross Monthly Ad Spend.</p>
           </div>
         </div>
       </section>
@@ -154,64 +167,18 @@ const HomePage = () => {
             {!isLogin && (
               <>
                 <div className="form-row">
-                  <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name *"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name *"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleChange} required />
+                  <input name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleChange} required />
                 </div>
                 <div className="form-row">
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone *"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="company"
-                    placeholder="Company/Organization *"
-                    value={formData.company}
-                    onChange={handleChange}
-                    required
-                  />
+                  <input name="phone" placeholder="Phone *" value={formData.phone} onChange={handleChange} required />
+                  <input name="company" placeholder="Company/Organization *" value={formData.company} onChange={handleChange} required />
                 </div>
               </>
             )}
-            <input
-              type="email"
-              name="email"
-              placeholder="Email *"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              autoComplete="email"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password *"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              autoComplete="current-password"
-            />
-            <button type="submit" disabled={loading}>
-              {loading ? (isLogin ? 'Logging in...' : 'Registering...') : isLogin ? 'Login' : 'Register'}
-            </button>
+            <input type="email" name="email" placeholder="Email *" value={formData.email} onChange={handleChange} required autoComplete="email" />
+            <input type="password" name="password" placeholder="Password *" value={formData.password} onChange={handleChange} required autoComplete="current-password" />
+            <button type="submit" disabled={loading}>{loading ? (isLogin ? 'Logging in...' : 'Registering...') : isLogin ? 'Login' : 'Register'}</button>
           </form>
 
           <button onClick={handleGoogleSignIn} disabled={loading} className="google-btn">
