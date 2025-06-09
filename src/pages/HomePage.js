@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../firebase/firebase';
-import { doCreateUserWithEmailAndPassword, doSignInWithGoogle } from '../firebase/auth';
+import { db, auth } from '../firebase/firebase';
+import {
+  doCreateUserWithEmailAndPassword,
+  doSignInWithEmailAndPassword,
+  doSignInWithGoogle,
+} from '../firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import Puma from '../assets/images/Puma.png';
 import Nike from '../assets/images/Nike.png';
 import '../assets/styles/HomePage.css';
@@ -21,7 +26,15 @@ const HomePage = () => {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useState(null); // Track current user
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,16 +45,23 @@ const HomePage = () => {
     e.preventDefault();
     setError('');
     setLoading(true);
+
     try {
-      const userCredential = await doCreateUserWithEmailAndPassword(formData.email, formData.password);
-      const user = userCredential.user;
+      if (isLogin) {
+        await doSignInWithEmailAndPassword(formData.email, formData.password);
+        navigate('/Dashboard');
+      } else {
+        const userCredential = await doCreateUserWithEmailAndPassword(formData.email, formData.password);
+        const user = userCredential.user;
 
-      await setDoc(doc(db, 'users', user.uid), {
-        ...formData,
-        createdAt: new Date(),
-      });
+        await setDoc(doc(db, 'users', user.uid), {
+          ...formData,
+          createdAt: new Date(),
+        });
 
-      setSubmitted(true);
+        navigate('/Dashboard');
+      }
+
       setFormData({
         firstName: '',
         lastName: '',
@@ -50,8 +70,8 @@ const HomePage = () => {
         company: '',
         password: '',
       });
+
       setLoading(false);
-      navigate('/dashboard');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -80,7 +100,7 @@ const HomePage = () => {
       }
 
       setLoading(false);
-      navigate('/dashboard');
+      navigate('/Dashboard');
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -122,32 +142,87 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Registration Form */}
-      <section className="form-section" id="form">
-        <h2>Get In Touch</h2>
-        <h3>Ready to get started?</h3>
-        {error && <p className="error">{error}</p>}
-        {submitted ? (
-          <div className="success-message">Registration successful! Redirecting...</div>
-        ) : (
+      {/* Form Section */}
+      {!user && (
+        <section className="form-section" id="form">
+          <h2>{isLogin ? 'Login' : 'Get In Touch'}</h2>
+          <h3>{isLogin ? 'Access your account' : 'Ready to get started?'}</h3>
+
+          {error && <p className="error">{error}</p>}
+
           <form onSubmit={handleSubmit}>
-            <div className="form-row">
-              <input type="text" name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleChange} required />
-              <input type="text" name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleChange} required />
-            </div>
-            <div className="form-row">
-              <input type="email" name="email" placeholder="Email *" value={formData.email} onChange={handleChange} required />
-              <input type="tel" name="phone" placeholder="Phone *" value={formData.phone} onChange={handleChange} required />
-            </div>
-            <input type="text" name="company" placeholder="Company/Organization Name *" value={formData.company} onChange={handleChange} required />
-            <input type="password" name="password" placeholder="Password *" value={formData.password} onChange={handleChange} required />
-            <button type="submit" disabled={loading}>{loading ? 'Registering...' : 'Register'}</button>
+            {!isLogin && (
+              <>
+                <div className="form-row">
+                  <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name *"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name *"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="form-row">
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone *"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="company"
+                    placeholder="Company/Organization *"
+                    value={formData.company}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </>
+            )}
+            <input
+              type="email"
+              name="email"
+              placeholder="Email *"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              autoComplete="email"
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password *"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              autoComplete="current-password"
+            />
+            <button type="submit" disabled={loading}>
+              {loading ? (isLogin ? 'Logging in...' : 'Registering...') : isLogin ? 'Login' : 'Register'}
+            </button>
           </form>
-        )}
-        <button onClick={handleGoogleSignIn} disabled={loading} className="google-btn">
-          {loading ? 'Signing in...' : 'Sign Up with Google'}
-        </button>
-      </section>
+
+          <button onClick={handleGoogleSignIn} disabled={loading} className="google-btn">
+            {loading ? 'Please wait...' : 'Sign In with Google'}
+          </button>
+
+          <button onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
+            {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
+          </button>
+        </section>
+      )}
     </div>
   );
 };
