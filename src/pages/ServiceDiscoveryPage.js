@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Addidas from '../assets/images/Addidas.png'; 
 import Puma from '../assets/images/Puma.png'; 
 import Nike from '../assets/images/Nike.png'; 
