@@ -33,14 +33,17 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (u) => {
       setUser(u);
+      console.log("Auth state changed:", u);
       if (u) {
         const docRef = doc(db, 'users', u.uid);
         const userDoc = await getDoc(docRef);
         const data = userDoc.exists() ? userDoc.data() : {};
         setRole(data?.isAdmin ? 'admin' : 'user');
+        console.log("User role fetched from Firestore:", userRole);
       } else {
         setRole(null);
       }
+      console.log("Loading state set to false"); 
       setLoading(false);
     });
     return () => unsubscribe();
