@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, auth } from '../firebase/firebase';
 import {
@@ -9,6 +9,8 @@ import {
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import Puma from '../assets/images/Puma.png';
+import Marketing from '../assets/images/marketing-strategy.png';
+import About from '../assets/images/about.jpg';
 import Nike from '../assets/images/Nike.png';
 import '../assets/styles/HomePage.css';
 
@@ -122,72 +124,229 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="text">
-          <h1>Beyond Boundaries:</h1>
-          <p>Reimagine Your Marketing Journey</p>
+
+      {/* Hero Section / Jumbotron */}
+      <section className="bg-light py-5 mb-4">
+        <div className="container text-center">
+          <h1 className="display-4 fw-bold text-primary">Beyond Boundaries</h1>
+          <p className="lead">Reimagine Your Marketing Journey</p>
+          <div className="d-flex justify-content-center my-4 gap-4">
+            <img src={Puma} alt="Puma" className="img-fluid" style={{ maxHeight: '60px' }} />
+            <img src={Nike} alt="Nike" className="img-fluid" style={{ maxHeight: '60px' }} />
+          </div>
+          <a href="#form" className="btn btn-primary btn-lg mt-3">
+            🔍 Discover More Clients
+          </a>
         </div>
-        <div className="images">
-          <img src={Puma} alt="Puma" />
-          <img src={Nike} alt="Nike" />
-        </div>
-        <a href="#form" className="discover">🔍 Discover More Clients</a>
       </section>
 
       {/* Stats Section */}
-      <section className="stats">
-        <h2>Trusted Worldwide</h2>
-        <h3>Raising Global Awareness</h3>
-        <div className="cards">
-          <div className="card">
-            <h4>500 +</h4>
-            <p>Businesses served globally.</p>
+      <section className="py-5 bg-white text-center">
+        <div className="container">
+          <h2 className="fw-bold mb-2">Trusted Worldwide</h2>
+          <p className="text-muted mb-5">Raising Global Awareness</p>
+          <div className="row g-4">
+
+            {/* Businesses Served */}
+            <div className="col-md-3">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <i className="bi bi-globe2 fs-1 text-primary mb-3"></i>
+                  <h4 className="fw-bold">500+</h4>
+                  <p>Businesses served globally.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <i className="bi bi-bar-chart-line fs-1 text-success mb-3"></i>
+                  <h4 className="fw-bold">200K</h4>
+                  <p>Monthly Website Visits.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <i className="bi bi-currency-dollar fs-1 text-warning mb-3"></i>
+                  <h4 className="fw-bold">$2M+</h4>
+                  <p>Gross Monthly Ad Spend.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-3">
+              <div className="card h-100 border-0 shadow-sm">
+                <div className="card-body">
+                  <i className="bi bi-megaphone fs-1 text-danger mb-3"></i>
+                  <h4 className="fw-bold">1,200+</h4>
+                  <p>Campaigns Successfully Managed.</p>
+                </div>
+              </div>
+            </div>
+
           </div>
-          <div className="card">
-            <h4>200K</h4>
-            <p>Monthly Website Visits.</p>
-          </div>
-          <div className="card">
-            <h4>$2M +</h4>
-            <p>Gross Monthly Ad Spend.</p>
+        </div>
+      </section>
+
+      {/* What We Do Section */}
+      <section className="py-5">
+        <div className="container">
+          <div className="row align-items-center">
+
+            {/* Text Content */}
+            <div className="col-md-6 mb-4 mb-md-0">
+              <h2 className="fw-bold mb-3 text-primary">What We Do</h2>
+              <p className="text-muted">
+                We empower brands to grow beyond boundaries.
+                Our expertise spans strategic digital marketing, paid ad campaigns, SEO, branding, and
+                growth consulting. We collaborate with global clients to deliver measurable, impactful results.
+              </p>
+              <p className="text-muted">
+                Whether you're a startup or an established business, we tailor marketing strategies that drive traffic, boost conversions, and maximize ROI.
+              </p>
+              <a href="#form" className="btn btn-outline-primary mt-3">
+                Get in Touch
+              </a>
+            </div>
+
+            <div className="col-md-6 text-center">
+              <img
+                src={About}
+                alt="What We Do"
+                className="img-fluid rounded shadow"
+              />
+            </div>
+
           </div>
         </div>
       </section>
 
       {/* Form Section */}
       {!user && (
-        <section className="form-section" id="form">
-          <h2>{isLogin ? 'Login' : 'Get In Touch'}</h2>
-          <h3>{isLogin ? 'Access your account' : 'Ready to get started?'}</h3>
+        <section id="form" className="py-5 bg-white">
+          <div className="container">
+            <div className="text-center mb-4">
+              <h2>{isLogin ? 'Login' : 'Get In Touch'}</h2>
+              <p className="text-muted">{isLogin ? 'Access your account' : 'Ready to get started?'}</p>
+            </div>
 
-          {error && <p className="error">{error}</p>}
+            <div className="row align-items-center">
 
-          <form onSubmit={handleSubmit}>
-            {!isLogin && (
-              <>
-                <div className="form-row">
-                  <input name="firstName" placeholder="First Name *" value={formData.firstName} onChange={handleChange} required />
-                  <input name="lastName" placeholder="Last Name *" value={formData.lastName} onChange={handleChange} required />
-                </div>
-                <div className="form-row">
-                  <input name="phone" placeholder="Phone *" value={formData.phone} onChange={handleChange} required />
-                  <input name="company" placeholder="Company/Organization *" value={formData.company} onChange={handleChange} required />
-                </div>
-              </>
-            )}
-            <input type="email" name="email" placeholder="Email *" value={formData.email} onChange={handleChange} required autoComplete="email" />
-            <input type="password" name="password" placeholder="Password *" value={formData.password} onChange={handleChange} required autoComplete="current-password" />
-            <button type="submit" disabled={loading}>{loading ? (isLogin ? 'Logging in...' : 'Registering...') : isLogin ? 'Login' : 'Register'}</button>
-          </form>
+              {/* Left Side - Image */}
+              <div className="col-md-6 mb-4 mb-md-0">
+                <img
+                  src={Marketing}
+                  alt="Contact Us"
+                  className="img-fluid rounded shadow"
+                />
+              </div>
 
-          <button onClick={handleGoogleSignIn} disabled={loading} className="google-btn">
-            {loading ? 'Please wait...' : 'Sign In with Google'}
-          </button>
+              {/* Right Side - Form */}
+              <div className="col-md-6 mb-4 mb-md-0">
+                <form onSubmit={handleSubmit}>
+                  {!isLogin && (
+                    <>
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          name="firstName"
+                          className="form-control"
+                          placeholder="First Name *"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          name="lastName"
+                          className="form-control"
+                          placeholder="Last Name *"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          name="phone"
+                          className="form-control"
+                          placeholder="Phone *"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          name="company"
+                          className="form-control"
+                          placeholder="Company/Organization *"
+                          value={formData.company}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
 
-          <button onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
-            {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
-          </button>
+                  <div className="mb-3">
+                    <input
+                      type="email"
+                      name="email"
+                      className="form-control"
+                      placeholder="Email *"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <input
+                      type="password"
+                      name="password"
+                      className="form-control"
+                      placeholder="Password *"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  {error && <div className="alert alert-danger">{error}</div>}
+
+                  <div className="d-grid gap-2 d-md-flex justify-content-md-start mb-3">
+                    <button type="submit" className="btn btn-success rounded-pill" disabled={loading}>
+                      {loading ? (isLogin ? 'Logging in...' : 'Registering...') : isLogin ? 'Login' : 'Register'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleGoogleSignIn}
+                      className="btn btn-outline-danger rounded-pill"
+                      disabled={loading}
+                    >
+                      {loading ? 'Please wait...' : 'Sign In with Google'}
+                    </button>
+                  </div>
+
+                  <div>
+                    <button type="button" onClick={() => setIsLogin(!isLogin)} className="btn text-primary">
+                      {isLogin ? "Don't have an account? Register" : 'Already have an account? Login'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </section>
       )}
     </div>

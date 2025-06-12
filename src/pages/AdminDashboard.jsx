@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase/firebase';
 import {
   collection,
@@ -10,7 +10,6 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -84,72 +83,98 @@ const AdminDashboard = () => {
   };
 
   if (loading) {
-    return <div className="admin-loading">Loading admin dashboard...</div>;
+    return <div className="text-center mt-5">Loading admin dashboard...</div>;
   }
 
   return (
-    <div className="admin-dashboard-container">
-      <header className="admin-header">
-        <h1>👩‍💼 Admin Dashboard</h1>
-        <p>Welcome, {userData?.firstName}!</p>
-        <button onClick={handleLogout} className="logout-button">Logout</button>
+    <div className="container my-4">
+      <header className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 className="h3">👩‍💼 Admin Dashboard</h1>
+          <p className="text-muted">Welcome, {userData?.firstName}!</p>
+        </div>
+        <button onClick={handleLogout} className="btn btn-outline-danger">Logout</button>
       </header>
 
-      <section className="admin-stats">
-        <div className="stat-card">
-          <h2>{messages.length}</h2>
-          <p>Messages Received</p>
+      <div className="row mb-4">
+        <div className="col-md-6 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h4>{messages.length}</h4>
+              <p className="mb-0 text-muted">Messages Received</p>
+            </div>
+          </div>
         </div>
-        <div className="stat-card">
-          <h2>{new Date().toLocaleDateString()}</h2>
-          <p>Today's Date</p>
+        <div className="col-md-6 mb-3">
+          <div className="card shadow-sm">
+            <div className="card-body text-center">
+              <h4>{new Date().toLocaleDateString()}</h4>
+              <p className="mb-0 text-muted">Today's Date</p>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <section className="admin-messages">
-        <h2>📨 Contact Messages</h2>
+      <section>
+        <h4 className="mb-3">📨 Contact Messages</h4>
         {messages.length === 0 ? (
-          <p>No messages found.</p>
+          <p className="text-muted">No messages found.</p>
         ) : selectedMessage ? (
-          <div className="message-detail">
-            <button className="back-button" onClick={() => setSelectedMessage(null)}>
+          <div className="card shadow-sm p-4">
+            <button className="btn btn-link mb-3" onClick={() => setSelectedMessage(null)}>
               ← Back to List
             </button>
-            <h3>Message from {selectedMessage.name}</h3>
+            <h5 className="mb-2">Message from {selectedMessage.name}</h5>
             <p><strong>Email:</strong> {selectedMessage.email}</p>
             <p><strong>Message:</strong> {selectedMessage.message}</p>
-            <p className="timestamp">
-              <small>{selectedMessage.createdAt?.toDate().toLocaleString()}</small>
-            </p>
+            <p className="text-muted"><small>{selectedMessage.createdAt?.toDate().toLocaleString()}</small></p>
 
             {selectedMessage.adminReply && (
-              <p className="reply"><strong>Reply:</strong> {selectedMessage.adminReply}</p>
+              <div className="alert alert-success">
+                <strong>Reply:</strong> {selectedMessage.adminReply}
+              </div>
             )}
 
-            <textarea
-              value={reply}
-              onChange={(e) => setReply(e.target.value)}
-              placeholder="Write your reply here..."
-              className="reply-box"
-            />
-            <button onClick={handleReply} className="reply-button">Send Reply</button>
-            <button onClick={() => handleDelete(selectedMessage.id)} className="delete-button">Delete Message</button>
+            <div className="mb-3">
+              <textarea
+                className="form-control"
+                rows="4"
+                placeholder="Write your reply here..."
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+              ></textarea>
+            </div>
+            <div className="d-flex gap-2">
+              <button className="btn btn-primary" onClick={handleReply}>Send Reply</button>
+              <button className="btn btn-danger" onClick={() => handleDelete(selectedMessage.id)}>
+                Delete Message
+              </button>
+            </div>
           </div>
         ) : (
-          <ul className="message-list">
+          <div className="row">
             {messages.map(msg => (
-              <li
-                key={msg.id}
-                className="message-card"
-                onClick={() => setSelectedMessage(msg)}
-              >
-                <p><strong>Name:</strong> {msg.name}</p>
-                <p><strong>Email:</strong> {msg.email}</p>
-                {msg.adminReply && <p className="replied-tag">✔️ Replied</p>}
-                <button className="view-message-button">View Message</button>
-              </li>
+              <div className="col-md-6 mb-3" key={msg.id}>
+                <div className="card shadow-sm h-100">
+                  <div className="card-body d-flex flex-column justify-content-between">
+                    <div>
+                      <p><strong>Name:</strong> {msg.name}</p>
+                      <p><strong>Email:</strong> {msg.email}</p>
+                      {msg.adminReply && (
+                        <span className="badge bg-success mb-2">✔️ Replied</span>
+                      )}
+                    </div>
+                    <button
+                      className="btn btn-outline-primary mt-auto"
+                      onClick={() => setSelectedMessage(msg)}
+                    >
+                      View Message
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </section>
     </div>

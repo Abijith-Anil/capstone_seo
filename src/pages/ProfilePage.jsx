@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { auth, db, storage } from '../firebase/firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import '../assets/styles/ProfilePage.css';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -44,6 +43,9 @@ const ProfilePage = () => {
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     setUploading(true);
+    setError('');
+    setSuccessMsg('');
+
     uploadTask.on(
       'state_changed',
       null,
@@ -63,6 +65,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     setSaving(true);
     setError('');
+    setSuccessMsg('');
     try {
       const user = auth.currentUser;
       const docRef = doc(db, 'users', user.uid);
@@ -83,37 +86,117 @@ const ProfilePage = () => {
     setSuccessMsg('');
   };
 
-  if (!profile) return <p>Loading profile...</p>;
+  if (!profile) return <p className="text-center mt-5">Loading profile...</p>;
 
   return (
-    <div className="profile-container">
-      <h2>My Profile</h2>
-      {error && <p className="error-message">{error}</p>}
-      {successMsg && <p className="success-message">{successMsg}</p>}
+    <div className="container my-5 bg-white p-5 text-center" style={{ maxWidth: 600 }}>
+      <h2 className="mb-4">My Profile</h2>
 
-      <img
-        className="profile-pic"
-        src={formData.profilePicUrl || 'https://via.placeholder.com/150'}
-        alt="Profile"
-      />
+      {error && <div className="alert alert-danger">{error}</div>}
+      {successMsg && <div className="alert alert-success">{successMsg}</div>}
+
+      <div className="mb-4">
+        <img
+          src={formData.profilePicUrl || 'https://placehold.co/150x150'}
+          alt="Profile"
+          className="rounded-circle border"
+          style={{ width: 150, height: 150, objectFit: 'cover' }}
+        />
+      </div>
 
       {editing && (
-        <input type="file" accept="image/*" onChange={handleImageChange} disabled={uploading} />
+        <div className="mb-3 text-start">
+          <label htmlFor="profilePicUpload" className="form-label">
+            Upload Profile Picture
+          </label>
+          <input
+            id="profilePicUpload"
+            type="file"
+            className="form-control"
+            accept="image/*"
+            onChange={handleImageChange}
+            disabled={uploading}
+          />
+        </div>
       )}
 
       {editing ? (
-        <div className="profile-form">
-          <label>First Name <input name="firstName" value={formData.firstName || ''} onChange={handleChange} /></label>
-          <label>Last Name <input name="lastName" value={formData.lastName || ''} onChange={handleChange} /></label>
-          <label>Company <input name="company" value={formData.company || ''} onChange={handleChange} /></label>
-          <button onClick={handleSave} disabled={saving || uploading}>{saving ? 'Saving...' : 'Save'}</button>
-          <button onClick={handleCancel} disabled={saving}>Cancel</button>
-        </div>
+        <form>
+          <div className="mb-3 text-start">
+            <label htmlFor="firstName" className="form-label">
+              First Name
+            </label>
+            <input
+              id="firstName"
+              name="firstName"
+              value={formData.firstName || ''}
+              onChange={handleChange}
+              className="form-control"
+              disabled={saving}
+            />
+          </div>
+
+          <div className="mb-3 text-start">
+            <label htmlFor="lastName" className="form-label">
+              Last Name
+            </label>
+            <input
+              id="lastName"
+              name="lastName"
+              value={formData.lastName || ''}
+              onChange={handleChange}
+              className="form-control"
+              disabled={saving}
+            />
+          </div>
+
+          <div className="mb-3 text-start">
+            <label htmlFor="company" className="form-label">
+              Company
+            </label>
+            <input
+              id="company"
+              name="company"
+              value={formData.company || ''}
+              onChange={handleChange}
+              className="form-control"
+              disabled={saving}
+            />
+          </div>
+
+          <div className="d-flex gap-2">
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={saving || uploading}
+              className="btn btn-primary"
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              disabled={saving}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
       ) : (
         <div>
-          <p><strong>Name:</strong> {profile.firstName} {profile.lastName}</p>
-          <p><strong>Company:</strong> {profile.company || 'N/A'}</p>
-          <button onClick={() => setEditing(true)}>Edit Profile</button>
+          <p>
+            <strong>Name:</strong> {profile.firstName} {profile.lastName}
+          </p>
+          <p>
+            <strong>Company:</strong> {profile.company || 'N/A'}
+          </p>
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => setEditing(true)}
+          >
+            Edit Profile
+          </button>
         </div>
       )}
     </div>

@@ -1,41 +1,75 @@
 import React from 'react';
-import Addidas from '../assets/images/Addidas.png'; 
-import Puma from '../assets/images/Puma.png'; 
-import Nike from '../assets/images/Nike.png'; 
-import underarmour from '../assets/images/UnderArmour.png';    
+import { Link } from 'react-router-dom';
+
+import Addidas from '../assets/images/Addidas.png';
+import Puma from '../assets/images/Puma.png';
+import Nike from '../assets/images/Nike.png';
+import underarmour from '../assets/images/UnderArmour.png';
 import '../App.css';
 
-
 const ServiceDiscoveryPage = () => (
-  <div className="container work-section">
-    <h1 className="things-we-do">
-      <span className="arrow-left"></span> Our Work <span className="arrow-right"></span>
-    </h1>
+  <div className="container py-5">
+    <div className="text-center mb-5">
+      <h1 className="display-5 fw-bold">
+        <span className="text-primary">&lt;&lt;</span> Our Work <span className="text-primary">&gt;&gt;</span>
+      </h1>
+      <p className="lead text-muted">Brands we've proudly collaborated with on innovative marketing campaigns.</p>
+    </div>
+
     <div className="row g-4">
-      <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://www.adidas.ca/en'}>
-          <img src={Addidas} alt="Addidas" className="img-fluid rounded work-image-placeholder" />
-          <p className="work-title">Addidas, 2025</p>
-        </div>
+
+      {/* Adidas */}
+      <div className="col-md-6 col-lg-4">
+        <Link to="/companies/adidas" className="text-decoration-none text-reset">
+          <div className="card h-100 shadow-sm border-0 work-card" role="button">
+            <img src={Addidas} alt="Adidas Project" className="card-img-top rounded-top" />
+            <div className="card-body">
+              <h5 className="card-title fw-semibold">Adidas</h5>
+              <p className="card-text text-muted">2025 — Digital ad campaign boosting urban streetwear visibility.</p>
+            </div>
+          </div>
+        </Link>
       </div>
-      <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://ca.puma.com/ca/en'}>
-          <img src={Puma} alt="Puma" className="img-fluid rounded work-image-placeholder" />
-          <p className="work-title">Puma, 2023</p>
-        </div>
+
+      {/* Puma */}
+      <div className="col-md-6 col-lg-4">
+        <Link to="/companies/puma" className="text-decoration-none text-reset">
+          <div className="card h-100 shadow-sm border-0 work-card" role="button">
+            <img src={Puma} alt="Puma Project" className="card-img-top rounded-top" />
+            <div className="card-body">
+              <h5 className="card-title fw-semibold">Puma</h5>
+              <p className="card-text text-muted">2023 — Social media strategy targeting Gen-Z lifestyle enthusiasts.</p>
+            </div>
+          </div>
+        </Link>
       </div>
-      <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://www.nike.com/ca/?msockid=2f8578963a62669f29ca6d943b486764'}>
-          <img src={Nike} alt="Nike" className="img-fluid rounded work-image-placeholder" />
-          <p className="work-title">Nike, 2024</p>
-        </div>
+
+      {/* Nike */}
+      <div className="col-md-6 col-lg-4">
+        <Link to="/companies/nike" className="text-decoration-none text-reset">
+          <div className="card h-100 shadow-sm border-0 work-card" role="button">
+            <img src={Nike} alt="Nike Project" className="card-img-top rounded-top" />
+            <div className="card-body">
+              <h5 className="card-title fw-semibold">Nike</h5>
+              <p className="card-text text-muted">2024 — Performance-focused email marketing to increase loyalty.</p>
+            </div>
+          </div>
+        </Link>
       </div>
-      <div className="col-md-6">
-        <div className="work-item" onClick={() => window.location.href = 'https://www.underarmour.ca/fr-ca/?cid=PS|CA|BR|ggl|all|under+armour|all|all|all|broad|dg|p54551912547&gclid=236e54dcd1bf10a09d6e3c9ecf35aa6b&gclsrc=3p.ds&&cid=PS_OMD_CA_30601_FX4I8FMGFH_58700006012683581_71700000068189469&msclkid=236e54dcd1bf10a09d6e3c9ecf35aa6b'}>
-          <img src={underarmour} alt="UnderArmour" className="img-fluid rounded work-image-placeholder" />
-          <p className="work-title">Under Armour, 2024</p>
-        </div>
+
+      {/* Under Armour */}
+      <div className="col-md-6 col-lg-4">
+        <Link to="/companies/underarmour" className="text-decoration-none text-reset">
+          <div className="card h-100 shadow-sm border-0 work-card" role="button">
+            <img src={underarmour} alt="Under Armour Project" className="card-img-top rounded-top" />
+            <div className="card-body">
+              <h5 className="card-title fw-semibold">Under Armour</h5>
+              <p className="card-text text-muted">2024 — Full-funnel campaign for winter athletic gear in Canada.</p>
+            </div>
+          </div>
+        </Link>
       </div>
+
     </div>
   </div>
 );

@@ -10,8 +10,18 @@ import ProfilePage from './pages/ProfilePage';
 import AdminDashboard from './pages/AdminDashboard';
 import { auth, db } from './firebase/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import Footer from './pages/components/Footer';
 import './App.css';
 
+import SEOServicePage from './pages/services/seo';
+import ServiceDiscoveryPage from './pages/services/discovery';
+import SocialMediaMarketingPage from './pages/services/SocialMediaMarketingPage';
+import EmailMarketingPage from './pages/services/EmailMarketingPage';
+import StrategyPage from './pages/services/StrategyPage';
+import CustomSolutionsPage from './pages/services/CustomSolutionsPage';
+
+import CompanyDetailPage from './pages/CompanyDetailPage';
+import ReportsPage from './pages/ReportsPage';
 
 const UserRoute = ({ user, role, children }) => {
   if (!user) return <Navigate to="/" />;
@@ -33,17 +43,14 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (u) => {
       setUser(u);
-      console.log("Auth state changed:", u);
       if (u) {
         const docRef = doc(db, 'users', u.uid);
         const userDoc = await getDoc(docRef);
         const data = userDoc.exists() ? userDoc.data() : {};
         setRole(data?.isAdmin ? 'admin' : 'user');
-        console.log("User role fetched from Firestore:", userRole);
       } else {
         setRole(null);
       }
-      console.log("Loading state set to false"); 
       setLoading(false);
     });
     return () => unsubscribe();
@@ -59,21 +66,41 @@ function App() {
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span className="navbar-toggler-icon"></span>
           </button>
+
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/about">About</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/services">Services</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/service-discovery">Our Work</Link></li>
               <li className="nav-item"><Link className="nav-link" to="/contact">Contact</Link></li>
-              {user && role === 'user' && (
-                <>
-                  <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
-                  <li className="nav-item"><Link className="nav-link" to="/profile">My Profile</Link></li>
-                </>
-              )}
-              {user && role === 'admin' && (
-                <li className="nav-item"><Link className="nav-link" to="/admin-dashboard">Admin</Link></li>
+
+              {(user && (role === 'user' || role === 'admin')) && (
+                <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="userDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Account
+                  </a>
+                  <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    {role === 'user' && (
+                      <>
+                        <li><Link className="dropdown-item" to="/dashboard">Dashboard</Link></li>
+                        <li><Link className="dropdown-item" to="/profile">My Profile</Link></li>
+                      </>
+                    )}
+                    {role === 'admin' && (
+                      <>
+                        <li><hr className="dropdown-divider" /></li>
+                        <li><Link className="dropdown-item" to="/admin-dashboard">Admin</Link></li>
+                      </>
+                    )}
+                  </ul>
+                </li>
               )}
             </ul>
           </div>
@@ -87,12 +114,23 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
 
-        {/*Role-protected Routes */}
         <Route path="/dashboard" element={<UserRoute user={user} role={role}><Dashboard /></UserRoute>} />
         <Route path="/profile" element={<UserRoute user={user} role={role}><ProfilePage /></UserRoute>} />
         <Route path="/admin-dashboard" element={<AdminRoute user={user} role={role}><AdminDashboard /></AdminRoute>} />
+
+        <Route path="/services/seo" element={<SEOServicePage />} />
+        <Route path="/services/discovery" element={<ServiceDiscoveryPage />} />
+        <Route path="/services/social-media" element={<SocialMediaMarketingPage />} />
+        <Route path="/services/email-marketing" element={<EmailMarketingPage />} />
+        <Route path="/services/strategy" element={<StrategyPage />} />
+        <Route path="/services/custom" element={<CustomSolutionsPage />} />
+        <Route path="/companies/:companyId" element={<CompanyDetailPage />} />
+        <Route path="/reports" element={<ReportsPage />} />
+
       </Routes>
+      <Footer />
     </Router>
+
   );
 }
 
