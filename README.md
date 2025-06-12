@@ -11,10 +11,7 @@ A collaborative digital marketing web application focused on SEO, service discov
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
-- [Folder Structure](#folder-structure)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
 
 ---
 
@@ -73,3 +70,11 @@ npm install
 ```bash
 npm start
 ```
+
+## 📸 Screenshots
+
+- 🏠 **Homepage**
+  - ![Homepage](screenshots/homepage.png)
+
+- 🔐 **Services Page**
+  - ![Services Page](screenshots/services.png)
