@@ -2,9 +2,6 @@
 
 A collaborative digital marketing web application focused on SEO, service discovery, and business analytics. Built as part of a final capstone project to help businesses expand their reach through modern web technologies.
 
-## 🚀 Live Demo
-[Add your Netlify/Vercel/Firebase link here]
-
 ---
 
 ## 📌 Table of Contents
@@ -40,8 +37,7 @@ A collaborative digital marketing web application focused on SEO, service discov
 - **Frontend**: React.js, Bootstrap 5
 - **Backend/DB**: Firebase Firestore & Firebase Auth
 - **Styling**: CSS3, Google Fonts (Inter)
-- **Charts**: Chart.js or Recharts *(choose your implementation)*
-- **Deployment**: [Netlify / Firebase Hosting]
+- **Charts**: Chart.js or Recharts
 
 ---
 
