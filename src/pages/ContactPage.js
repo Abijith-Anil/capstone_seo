@@ -8,6 +8,8 @@ const ContactPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  //Loading state added
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -19,15 +21,22 @@ const ContactPage = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setUserData(docSnap.data());
+            //Log user role for debugging
+          console.log('User role:', docSnap.data()?.role);
         }
       } else {
         setUser(null);
         setUserData(null);
       }
+      
+      //Set loading false after user data is fetched
+      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+  //Show loading indicator while fetching user info
+  if (loading) return <div className="text-center mt-5">Loading...</div>;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
