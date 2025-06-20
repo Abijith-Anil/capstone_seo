@@ -1,0 +1,185 @@
+/* **********************************
+*************************************
+*********** GENERAL STYLES 
+*************************************
+************************************/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+  line-height: 1.6;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Paragraphs */
+p {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  color: #0a58ca;
+  text-decoration: none;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 1.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #0d6efd;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* **********************************
+*************************************
+*********** SERVICES PAGE
+*************************************
+************************************/
+
+.services-section {
+  padding: 4rem 0;
+}
+
+.things-we-do {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arrow-left,
+.arrow-right {
+  color: #0d6efd;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.service-item {
+  margin-bottom: 1.5rem;
+}
+
+.service-item h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0d6efd;
+  margin-bottom: 0.5rem;
+}
+
+.service-item p {
+  font-size: 1rem;
+  color: #495057;
+  line-height: 1.6;
+}
+
+.services-image-placeholder {
+  background-color: #e9ecef;
+  border-radius: 12px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.image-placeholder-text {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+/* **********************************
+*************************************
+*********** SERVICE DISCOVERY PAGE
+*************************************
+************************************/
+
+.work-section {
+  padding: 4rem 0;
+}
+
+.work-item {
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.work-image-placeholder {
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  height: 300px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.work-item:hover .work-image-placeholder {
+  transform: scale(1.05);
+}
+
+.work-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0d6efd;
+  text-align: center;
+}
