@@ -9,6 +9,7 @@ const companies = {
       'Running Shoes',
       'Sports Apparel',
       'Urban Streetwear',
+      'clothes',
       'Athletic Accessories',
     ],
     website: 'https://www.adidas.ca/en',
