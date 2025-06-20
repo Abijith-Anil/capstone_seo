@@ -84,11 +84,11 @@ const AboutPage = () => (
       </div>
 
       <div className="row g-4">
-        {['Alex', 'Jamie', 'Taylor'].map((name, i) => (
+        {['Parth', 'Ujjawal', 'abhi','saurav'].map((name, i) => (
           <div className="col-md-4" key={i}>
             <div className="card border-0 text-center p-3">
               <img src={Def} className="rounded-circle mx-auto mb-3" style={{ width: '50px', height: '50px', objectFit: 'cover' }} alt={name} />
-              <h5 className="mb-1">{name} Smith</h5>
+              <h5 className="mb-1">{name} Cambrian</h5>
               <p className="text-muted small">Digital Strategist</p>
             </div>
           </div>
